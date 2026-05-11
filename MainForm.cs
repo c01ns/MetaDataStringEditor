@@ -104,8 +104,13 @@ namespace MetaDataStringEditor {
                 status = FormStatus.Saving;
                 
                 ThreadPool.QueueUserWorkItem(delegate {
-                    file.WriteToNewFile(saveFileDialog1.FileName);
-                    status = FormStatus.Editing;
+                    try {
+                        file.WriteToNewFile(saveFileDialog1.FileName);
+                    } catch (Exception ex) {
+                        Logger.E(ex.ToString());
+                    } finally {
+                        status = FormStatus.Editing;
+                    }
                 });
             }
         }
@@ -154,6 +159,9 @@ namespace MetaDataStringEditor {
         }
 
         private void listView1_MouseDoubleClick(object sender, MouseEventArgs e) {
+            if (listView1.SelectedItems.Count == 0) {
+                return;
+            }
             var item = listView1.SelectedItems[0] as EditorListItem;
             startEditor(item);
         }
@@ -161,6 +169,9 @@ namespace MetaDataStringEditor {
 
         private void 编辑ToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (listView1.SelectedItems.Count == 0) {
+                return;
+            }
             var item = listView1.SelectedItems[0] as EditorListItem;
             startEditor(item);
         }

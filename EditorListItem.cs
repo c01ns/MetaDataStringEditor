@@ -24,7 +24,7 @@ namespace MetaDataStringEditor {
 
         public void SetNewStr(string newString) {
             NewStrBytes = Encoding.UTF8.GetBytes(newString);
-            IsEdit = !Equals(OriginStrBytes, NewStrBytes);
+            IsEdit = !OriginStrBytes.SequenceEqual(NewStrBytes);
 
             SubItems[1].Text = IsEdit ? newString : "";
             SubItems[2].Text = IsEdit ? "*" : "";
